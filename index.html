@@ -1,0 +1,334 @@
+prueba<b>x</b>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autos Clásicos</title>
+<meta name="description" content="Autos Clásicos: sitio de venta de autos clásicos (ejercicio de sistema de diseño).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#ffffff}
+a{color:#2b3c7b}a:hover{color:#1c2755}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #2b3c7b;outline-offset:3px}
+.on-dark a:focus-visible{outline-color:#ffffff}
+.btn{transition:background-color 180ms cubic-bezier(0.22,1,0.36,1),color 180ms cubic-bezier(0.22,1,0.36,1),transform 180ms cubic-bezier(0.22,1,0.36,1)}
+.btn:hover{transform:translateY(-2px)}
+.card{transition:transform 450ms cubic-bezier(0.22,1,0.36,1),box-shadow 450ms cubic-bezier(0.22,1,0.36,1)}
+.card:hover{transform:translateY(-6px);box-shadow:0 28px 60px rgba(28,39,85,0.28)}
+
+/* Texto que sube desde una máscara, palabra por palabra */
+.w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:0.08em}
+.w>span{display:inline-block;transform:translateY(112%);animation:rise 900ms cubic-bezier(0.22,1,0.36,1) forwards;animation-delay:calc(var(--i) * 70ms + 150ms)}
+@keyframes rise{to{transform:translateY(0)}}
+.fu{opacity:0;transform:translateY(24px);animation:fu 900ms cubic-bezier(0.22,1,0.36,1) forwards;animation-delay:var(--d,0ms)}
+@keyframes fu{to{opacity:1;transform:none}}
+
+/* Franjas en movimiento */
+.marquee-track{display:flex;width:max-content;animation:marquee 32s linear infinite}
+.marquee-rev{animation-direction:reverse;animation-duration:44s}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Hero: movimiento continuo */
+.sun{animation:sun 9s ease-in-out infinite alternate}
+@keyframes sun{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+.drive-in{animation:drive 1800ms cubic-bezier(0.22,1,0.36,1) both 300ms}
+@keyframes drive{from{transform:translateX(-140%)}to{transform:translateX(0)}}
+.bob{animation:bob 1.2s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-2px)}}
+.wheel{transform-box:fill-box;transform-origin:center;animation:spin 1.4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dashflow{stroke-dasharray:22 20;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-84}}
+.dashslow{stroke-dasharray:10 16;animation:dash2 6s linear infinite}
+@keyframes dash2{to{stroke-dashoffset:-208}}
+
+/* Animaciones ligadas al scroll (solo donde el navegador las admite) */
+.progress{display:none}
+@supports (animation-timeline: view()) {
+  .progress{display:block;position:sticky;top:0;height:0;z-index:60;pointer-events:none}
+  .progress-line{height:4px;background:#0b0b0f;transform-origin:left center;transform:scaleX(0);animation:grow linear both;animation-timeline:scroll(nearest)}
+  .progress-car{position:absolute;top:6px;left:0;width:84px;color:#2b3c7b;animation:cross linear both;animation-timeline:scroll(nearest)}
+  @keyframes grow{to{transform:scaleX(1)}}
+  @keyframes cross{from{left:0}to{left:calc(100% - 84px)}}
+
+  .px{animation:px linear both;animation-timeline:scroll(nearest);animation-range:0px 900px}
+  @keyframes px{to{transform:translate3d(var(--dx,0px),var(--dy,0px),0)}}
+  .hero-copy{animation:fadeaway linear both;animation-timeline:scroll(nearest);animation-range:0px 700px}
+  @keyframes fadeaway{to{opacity:0.15;transform:translateY(-40px)}}
+
+  .rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 75%}
+  .rv.b{animation-range:entry 8% entry 85%}
+  .rv.c{animation-range:entry 16% entry 95%}
+  @keyframes rv{from{opacity:0;transform:translateY(72px) rotateX(12deg)}to{opacity:1;transform:none}}
+
+  .drift{animation:drift linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  @keyframes drift{from{transform:translateX(-35%)}to{transform:translateX(30%)}}
+  .drift-rev{animation:driftr linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  @keyframes driftr{from{transform:translateX(25%)}to{transform:translateX(-25%)}}
+  .slow{animation:slow linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  @keyframes slow{from{transform:translateY(-8%)}to{transform:translateY(8%)}}
+  .fill-line{transform-origin:left center;animation:fl linear both;animation-timeline:view();animation-range:entry 20% cover 40%}
+  @keyframes fl{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important;transition:none !important}
+  .w>span,.fu{transform:none !important;opacity:1 !important}
+  .progress{display:none !important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="car" viewBox="0 0 400 140">
+<path d="M10 106 C10 96 24 88 52 78 C96 56 150 22 220 20 C282 18 318 40 346 66 C368 72 388 82 392 96 L392 106 Z" fill="currentColor"></path>
+<path d="M150 58 C176 38 214 34 244 36 C266 38 286 50 302 62 L150 62 Z" fill="#ffffff" fill-opacity="0.9"></path>
+<circle cx="100" cy="108" r="24" fill="currentColor"></circle>
+<circle cx="316" cy="108" r="24" fill="currentColor"></circle>
+<circle cx="100" cy="108" r="9" fill="#ffffff" fill-opacity="0.9"></circle>
+<circle cx="316" cy="108" r="9" fill="#ffffff" fill-opacity="0.9"></circle>
+</symbol>
+</defs>
+</svg>
+
+<div style="width:100%;background:#ffffff;color:#0b0b0f;font-family:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:26px;overflow:hidden">
+
+<!-- Progreso de lectura: un auto que recorre la página -->
+<div class="progress" aria-hidden="true">
+<div class="progress-line"></div>
+<div class="progress-car"><svg viewBox="0 0 400 140" style="display:block;width:100%;height:auto"><use href="#car"></use></svg></div>
+</div>
+
+<!-- Navegación -->
+<header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:20px 48px;background:#ffffff;border-bottom:1px solid #c9cee3">
+<a href="#inicio" style="font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:700;font-size:26px;line-height:1;color:#0b0b0f;text-decoration:none">Autos Clásicos</a>
+<nav aria-label="Principal" style="display:flex;flex-wrap:wrap;align-items:center;gap:32px;font-size:14px;line-height:22px;font-weight:600">
+<a href="#coleccion" style="color:#0b0b0f;text-decoration:none">Colección</a>
+<a href="#proceso" style="color:#0b0b0f;text-decoration:none">Cómo revisamos</a>
+<a href="#contacto" class="btn" style="display:inline-flex;align-items:center;min-height:44px;padding:0 24px;border-radius:999px;background:#0b0b0f;color:#ffffff;text-decoration:none">Contacto →</a>
+</nav>
+</header>
+
+<!-- Hero -->
+<section id="inicio" style="position:relative;overflow:hidden;background:#ffffff">
+<!-- fondo: colinas amplias y puntos -->
+<svg viewBox="0 0 1440 760" preserveAspectRatio="xMidYMax slice" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">
+<path class="px" style="--dy:60px" d="M0 560 C240 480 420 520 640 560 C860 600 1080 500 1440 540 L1440 760 L0 760 Z" fill="#dde1f0" opacity="0.7"></path>
+<path class="px" style="--dy:30px" d="M0 640 C300 590 520 640 760 650 C1000 660 1200 600 1440 630 L1440 760 L0 760 Z" fill="#dde1f0"></path>
+<path class="dashslow" d="M-20 700 C300 660 700 740 1460 680" fill="none" stroke="#2b3c7b" stroke-width="2" opacity="0.35"></path>
+</svg>
+<div style="position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:64px;padding:96px 48px">
+<div class="hero-copy" style="flex:1 1 480px;min-width:0;display:flex;flex-direction:column;gap:24px">
+<span class="fu" style="--d:0ms;font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#2b3c7b">Autos de colección</span>
+<h1 aria-label="Autos que ya no se fabrican, se heredan." style="margin:0;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:700;font-size:92px;line-height:0.95;letter-spacing:-0.015em;color:#0b0b0f">
+<span class="w" aria-hidden="true"><span style="--i:0">Autos</span></span>
+<span class="w" aria-hidden="true"><span style="--i:1">que</span></span>
+<span class="w" aria-hidden="true"><span style="--i:2">ya</span></span>
+<span class="w" aria-hidden="true"><span style="--i:3">no</span></span>
+<span class="w" aria-hidden="true"><span style="--i:4">se</span></span>
+<span class="w" aria-hidden="true"><span style="--i:5">fabrican,</span></span>
+<span class="w" aria-hidden="true" style="color:#2b3c7b"><span style="--i:6">se</span></span>
+<span class="w" aria-hidden="true" style="color:#2b3c7b"><span style="--i:7">heredan.</span></span>
+</h1>
+<p class="fu" style="--d:900ms;margin:0;max-width:520px;font-size:19px;line-height:30px;color:#4a5068">Cada auto llega con su historia, sus papeles y una revisión mecánica completa. Tú decides con toda la información.</p>
+<div class="fu" style="--d:1050ms;display:flex;flex-wrap:wrap;gap:16px;margin-top:8px">
+<a href="#coleccion" class="btn" style="display:inline-flex;align-items:center;min-height:48px;padding:0 32px;border-radius:999px;background:#0b0b0f;color:#ffffff;font-size:14px;line-height:22px;font-weight:600;text-decoration:none">Ver el Tatra 87 →</a>
+<a href="#contacto" class="btn" style="display:inline-flex;align-items:center;min-height:48px;padding:0 32px;border-radius:999px;border:2px solid #0b0b0f;color:#0b0b0f;font-size:14px;line-height:22px;font-weight:600;text-decoration:none">Hablar con nosotros</a>
+</div>
+</div>
+
+<!-- Escena del hero con capas en parallax -->
+<div style="flex:1 1 480px;min-width:0;position:relative;aspect-ratio:16/10;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#dde1f0 0%,#ffffff 100%);box-shadow:0 18px 40px rgba(11,11,15,0.12)">
+<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+<g class="px" style="--dy:120px"><circle class="sun" cx="590" cy="130" r="64" fill="#ffffff"></circle></g>
+<path class="px" style="--dy:90px" d="M-40 330 C100 250 240 270 360 310 C480 350 620 250 840 300 L840 560 L-40 560 Z" fill="#2b3c7b" opacity="0.4"></path>
+<path class="px" style="--dy:55px" d="M-40 390 C120 330 260 360 400 390 C540 420 680 350 840 380 L840 560 L-40 560 Z" fill="#2b3c7b" opacity="0.75"></path>
+<path class="px" style="--dy:25px" d="M-40 430 C160 400 340 440 520 420 C680 404 760 420 840 410 L840 560 L-40 560 Z" fill="#2b3c7b"></path>
+<rect x="0" y="446" width="800" height="54" fill="#1c2755"></rect>
+<line class="dashflow" x1="0" y1="476" x2="800" y2="476" stroke="#ffffff" stroke-width="3" opacity="0.8"></line>
+</svg>
+<div class="px" style="--dx:260px;position:absolute;left:16%;bottom:3%;width:54%">
+<div class="drive-in"><div class="bob">
+<svg viewBox="0 0 400 140" aria-hidden="true" style="display:block;width:100%;height:auto;color:#0b0b0f">
+<path d="M10 106 C10 96 24 88 52 78 C96 56 150 22 220 20 C282 18 318 40 346 66 C368 72 388 82 392 96 L392 106 Z" fill="currentColor"></path>
+<path d="M150 58 C176 38 214 34 244 36 C266 38 286 50 302 62 L150 62 Z" fill="#ffffff" fill-opacity="0.9"></path>
+<g class="wheel"><circle cx="100" cy="108" r="24" fill="currentColor"></circle><circle cx="100" cy="108" r="9" fill="#ffffff"></circle><path d="M100 90 V126 M82 108 H118" stroke="#ffffff" stroke-width="3"></path></g>
+<g class="wheel"><circle cx="316" cy="108" r="24" fill="currentColor"></circle><circle cx="316" cy="108" r="9" fill="#ffffff"></circle><path d="M316 90 V126 M298 108 H334" stroke="#ffffff" stroke-width="3"></path></g>
+</svg>
+</div></div>
+</div>
+<span style="position:absolute;left:20px;top:20px;padding:6px 14px;border-radius:999px;background:#0b0b0f;color:#ffffff;font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase">Ilustración · foto del Tatra 87 pendiente</span>
+</div>
+</div>
+</section>
+
+<!-- Franjas en movimiento -->
+<div aria-hidden="true" style="overflow:hidden;background:#0b0b0f;color:#ffffff;padding:20px 0;display:flex;flex-direction:column;gap:8px">
+<div class="marquee-track">
+<span style="white-space:nowrap;padding-right:48px;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:600;font-size:28px;line-height:1.2">Historia documentada · Papeles en regla · Revisión mecánica completa · Historia documentada · Papeles en regla · Revisión mecánica completa · </span>
+<span style="white-space:nowrap;padding-right:48px;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:600;font-size:28px;line-height:1.2">Historia documentada · Papeles en regla · Revisión mecánica completa · Historia documentada · Papeles en regla · Revisión mecánica completa · </span>
+</div>
+<div class="marquee-track marquee-rev">
+<span style="white-space:nowrap;padding-right:48px;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:600;font-size:28px;line-height:1.2;color:transparent;-webkit-text-stroke:1px #ffffff">Tatra 87 · Autos que se heredan · Tatra 87 · Autos que se heredan · Tatra 87 · Autos que se heredan · Tatra 87 · Autos que se heredan · </span>
+<span style="white-space:nowrap;padding-right:48px;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:600;font-size:28px;line-height:1.2;color:transparent;-webkit-text-stroke:1px #ffffff">Tatra 87 · Autos que se heredan · Tatra 87 · Autos que se heredan · Tatra 87 · Autos que se heredan · Tatra 87 · Autos que se heredan · </span>
+</div>
+</div>
+
+<!-- Colección -->
+<section id="coleccion" style="position:relative;overflow:hidden;padding:96px 48px;background:#f3f4f9;perspective:1100px">
+<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">
+<g class="slow">
+<path d="M0 640 C240 560 460 620 700 660 C940 700 1160 600 1440 640 L1440 1000 L0 1000 Z" fill="#dde1f0" opacity="0.8"></path>
+<path d="M0 740 C300 690 560 760 820 760 C1080 760 1240 700 1440 730 L1440 1000 L0 1000 Z" fill="#dde1f0"></path>
+</g>
+<path class="dashslow" d="M-20 820 C360 780 760 860 1460 800" fill="none" stroke="#2b3c7b" stroke-width="2" opacity="0.3"></path>
+</svg>
+<div style="position:relative;display:flex;flex-direction:column;gap:64px">
+<div class="rv" style="display:flex;flex-direction:column;gap:16px;max-width:640px">
+<span style="font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#2b3c7b">Colección</span>
+<h2 style="margin:0;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:700;font-size:64px;line-height:1;letter-spacing:-0.01em">La colección</h2>
+<div class="fill-line" style="height:3px;width:120px;background:#0b0b0f"></div>
+<p style="margin:0;font-size:19px;line-height:30px;color:#4a5068">Pocos autos, cada uno con su ficha completa. Empezamos con uno.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:stretch">
+<div class="rv b" style="flex:0 1 560px;min-width:min(100%,320px);display:flex">
+<article class="card" style="width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 18px 40px rgba(11,11,15,0.12);display:flex;flex-direction:column">
+<div style="position:relative;aspect-ratio:16/10;background:linear-gradient(180deg,#dde1f0 0%,#ffffff 100%);overflow:hidden">
+<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">
+<circle class="sun" cx="620" cy="130" r="52" fill="#ffffff"></circle>
+<g class="slow">
+<path d="M-40 340 C120 270 260 290 380 320 C500 350 640 280 840 320 L840 560 L-40 560 Z" fill="#2b3c7b" opacity="0.45"></path>
+<path d="M-40 400 C140 350 280 380 420 400 C560 420 680 370 840 390 L840 560 L-40 560 Z" fill="#2b3c7b"></path>
+</g>
+<rect x="0" y="446" width="800" height="54" fill="#1c2755"></rect>
+<line class="dashflow" x1="0" y1="476" x2="800" y2="476" stroke="#ffffff" stroke-width="3" opacity="0.8"></line>
+</svg>
+<div style="position:absolute;left:22%;bottom:3%;width:56%;color:#0b0b0f"><div class="bob"><svg viewBox="0 0 400 140" aria-hidden="true" style="display:block;width:100%;height:auto"><use href="#car"></use></svg></div></div>
+<span style="position:absolute;left:20px;top:20px;padding:6px 14px;border-radius:999px;background:#0b0b0f;color:#ffffff;font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase">Modelo 1936–1950</span>
+<span style="position:absolute;right:20px;top:24px;font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#1c2755">Fotos de referencia</span>
+</div>
+<div style="padding:24px;display:flex;flex-direction:column;gap:16px">
+<h3 style="margin:0;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:600;font-size:28px;line-height:1.2">Tatra 87</h3>
+<dl style="margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px;font-size:14px;line-height:22px;font-weight:500">
+<div><dt style="color:#4a5068">Motor</dt><dd style="margin:0">V8 enfriado por aire, 2.97 L</dd></div>
+<div><dt style="color:#4a5068">Origen</dt><dd style="margin:0">Checoslovaquia</dd></div>
+<div><dt style="color:#4a5068">Año de la unidad</dt><dd style="margin:0">[AÑO]</dd></div>
+<div><dt style="color:#4a5068">Kilometraje</dt><dd style="margin:0">[KILOMETRAJE]</dd></div>
+</dl>
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid #c9cee3">
+<span style="font-size:19px;line-height:30px;font-weight:600">Precio a consultar</span>
+<a href="#contacto" class="btn" style="display:inline-flex;align-items:center;min-height:44px;padding:0 24px;border-radius:999px;background:#0b0b0f;color:#ffffff;font-size:14px;line-height:22px;font-weight:600;text-decoration:none">Ver ficha →</a>
+</div>
+</div>
+</article>
+</div>
+<div class="rv c" style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:0 0 0 16px">
+<h3 style="margin:0;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:600;font-size:40px;line-height:1.1">Más autos pronto</h3>
+<p style="margin:0;font-size:16px;line-height:26px;color:#4a5068">Publicamos un auto cuando tenemos su historia, sus papeles y su revisión. Si buscas uno en particular, cuéntanos y lo buscamos contigo.</p>
+<a href="#contacto" style="font-size:14px;line-height:22px;font-weight:600;color:#2b3c7b">Avísame cuando llegue uno →</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Cómo revisamos -->
+<section id="proceso" class="on-dark" style="position:relative;overflow:hidden;padding:96px 48px 200px;background:linear-gradient(180deg,#2b3c7b 0%,#1c2755 100%);color:#ffffff;perspective:1100px">
+<svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">
+<g class="slow">
+<path d="M0 520 C260 440 480 500 720 540 C960 580 1180 480 1440 520 L1440 900 L0 900 Z" fill="#ffffff" opacity="0.06"></path>
+<path d="M0 640 C300 590 560 660 820 660 C1080 660 1240 600 1440 630 L1440 900 L0 900 Z" fill="#0b0b0f" opacity="0.25"></path>
+</g>
+<line class="dashflow" x1="0" y1="760" x2="1440" y2="760" stroke="#ffffff" stroke-width="3" opacity="0.35"></line>
+</svg>
+<div class="drift" style="position:absolute;left:0;bottom:56px;width:560px;color:#ffffff;opacity:0.14"><svg viewBox="0 0 400 140" aria-hidden="true" style="display:block;width:100%;height:auto"><use href="#car"></use></svg></div>
+<div style="position:relative;display:flex;flex-direction:column;gap:64px">
+<div class="rv" style="display:flex;flex-direction:column;gap:16px;max-width:640px">
+<span style="font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase">Cómo revisamos</span>
+<h2 style="margin:0;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:700;font-size:64px;line-height:1;letter-spacing:-0.01em">Tres revisiones antes de publicar</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px">
+<div class="rv" style="padding:32px;border-radius:20px;background:#0b0b0f;display:flex;flex-direction:column;gap:12px">
+<span style="font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase">01</span>
+<h3 style="margin:0;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:600;font-size:28px;line-height:1.2">Historia</h3>
+<p style="margin:0;font-size:16px;line-height:26px">Reconstruimos el recorrido del auto: dueños, años y lugares.</p>
+</div>
+<div class="rv b" style="padding:32px;border-radius:20px;background:#0b0b0f;display:flex;flex-direction:column;gap:12px">
+<span style="font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase">02</span>
+<h3 style="margin:0;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:600;font-size:28px;line-height:1.2">Papeles</h3>
+<p style="margin:0;font-size:16px;line-height:26px">Revisamos título, facturas y permisos antes de mostrártelo.</p>
+</div>
+<div class="rv c" style="padding:32px;border-radius:20px;background:#0b0b0f;display:flex;flex-direction:column;gap:12px">
+<span style="font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase">03</span>
+<h3 style="margin:0;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:600;font-size:28px;line-height:1.2">Revisión mecánica</h3>
+<p style="margin:0;font-size:16px;line-height:26px">Un taller revisa motor, frenos y suspensión. Te entregamos el informe completo.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Contacto -->
+<section id="contacto" style="position:relative;overflow:hidden;padding:96px 48px;background:#ffffff;perspective:1100px">
+<svg viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">
+<path class="dashslow" d="M-20 120 C300 40 520 220 820 140 C1100 70 1260 200 1460 120" fill="none" stroke="#2b3c7b" stroke-width="2" opacity="0.35"></path>
+<path class="dashslow" d="M-20 600 C320 520 560 680 860 600 C1120 530 1280 650 1460 580" fill="none" stroke="#2b3c7b" stroke-width="2" opacity="0.35"></path>
+</svg>
+<div class="drift-rev" style="position:absolute;right:0;top:24px;width:300px;color:#2b3c7b;opacity:0.12"><svg viewBox="0 0 400 140" aria-hidden="true" style="display:block;width:100%;height:auto;transform:scaleX(-1)"><use href="#car"></use></svg></div>
+<div style="position:relative;display:flex;flex-wrap:wrap;gap:64px">
+<div class="rv" style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:24px">
+<span style="font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#2b3c7b">Contacto</span>
+<h2 style="margin:0;font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:700;font-size:64px;line-height:1;letter-spacing:-0.01em">Cuéntanos qué auto buscas</h2>
+<p style="margin:0;font-size:19px;line-height:30px;color:#4a5068">Déjanos tus datos y te respondemos con la ficha completa del auto.</p>
+<div style="display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:22px;font-weight:500;color:#4a5068">
+<span>Teléfono: [TELÉFONO]</span>
+<span>Correo: [CORREO]</span>
+<span>Dirección: [DIRECCIÓN]</span>
+</div>
+</div>
+<form class="rv b" style="flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:20px" onsubmit="return false">
+<div style="display:flex;flex-wrap:wrap;gap:20px">
+<div style="flex:1 1 200px;display:flex;flex-direction:column;gap:8px">
+<label for="marca" style="font-size:14px;line-height:22px;font-weight:600">Marca</label>
+<input id="marca" type="text" value="Tatra" style="box-sizing:border-box;width:100%;min-height:48px;padding:0 16px;border:2px solid #0b0b0f;border-radius:4px;font:inherit;background:#ffffff;color:#0b0b0f">
+</div>
+<div style="flex:1 1 200px;display:flex;flex-direction:column;gap:8px">
+<label for="modelo" style="font-size:14px;line-height:22px;font-weight:600">Modelo</label>
+<input id="modelo" type="text" value="87" style="box-sizing:border-box;width:100%;min-height:48px;padding:0 16px;border:2px solid #0b0b0f;border-radius:4px;font:inherit;background:#ffffff;color:#0b0b0f">
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<label for="nombre" style="font-size:14px;line-height:22px;font-weight:600">Nombre completo</label>
+<input id="nombre" type="text" style="box-sizing:border-box;width:100%;min-height:48px;padding:0 16px;border:2px solid #0b0b0f;border-radius:4px;font:inherit;background:#ffffff;color:#0b0b0f">
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:20px">
+<div style="flex:1 1 200px;display:flex;flex-direction:column;gap:8px">
+<label for="telefono" style="font-size:14px;line-height:22px;font-weight:600">Teléfono</label>
+<input id="telefono" type="tel" style="box-sizing:border-box;width:100%;min-height:48px;padding:0 16px;border:2px solid #0b0b0f;border-radius:4px;font:inherit;background:#ffffff;color:#0b0b0f">
+</div>
+<div style="flex:1 1 200px;display:flex;flex-direction:column;gap:8px">
+<label for="correo" style="font-size:14px;line-height:22px;font-weight:600">Correo</label>
+<input id="correo" type="email" style="box-sizing:border-box;width:100%;min-height:48px;padding:0 16px;border:2px solid #0b0b0f;border-radius:4px;font:inherit;background:#ffffff;color:#0b0b0f">
+</div>
+</div>
+<button type="submit" class="btn" style="align-self:flex-start;min-height:48px;padding:0 32px;border:0;border-radius:999px;background:#0b0b0f;color:#ffffff;font:inherit;font-size:14px;line-height:22px;font-weight:600;cursor:pointer">Enviar →</button>
+</form>
+</div>
+</section>
+
+<!-- Pie -->
+<footer class="on-dark" style="padding:64px 48px;background:#1c2755;color:#ffffff;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-family:'Bodoni Moda','Didot',Georgia,serif;font-weight:700;font-size:28px;line-height:1.2">Autos Clásicos</span>
+<span style="font-size:14px;line-height:22px;font-weight:500">© 2026 Autos Clásicos</span>
+</div>
+<nav aria-label="Legal" style="display:flex;flex-wrap:wrap;gap:32px;font-size:14px;line-height:22px;font-weight:600">
+<a href="#inicio" style="color:#ffffff">Aviso de privacidad</a>
+<a href="#inicio" style="color:#ffffff">Términos de uso</a>
+<a href="#inicio" style="color:#ffffff">Volver arriba →</a>
+</nav>
+</footer>
+
+</div>
+</body>
+</html>
